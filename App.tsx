@@ -22,6 +22,7 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import GamesContainer from './src/components/GamesContainer';
 
 /* const Section: React.FC<
   PropsWithChildren<{
@@ -84,7 +85,7 @@ const App = () => {
       <NavigationContainer>
         <ScrollView>
           <View>
-            <Text>hi</Text>
+            <GamesContainer />
           </View>
         </ScrollView>
       </NavigationContainer>

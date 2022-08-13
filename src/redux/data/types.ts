@@ -1,3 +1,5 @@
+import {ImageSourcePropType} from 'react-native';
+
 export interface DataState {
   betData: BetData;
   selectedBetData: SelectedBetData;
@@ -7,8 +9,9 @@ export interface DataState {
 
 export interface BetData {
   betType: string;
-  tracks: [string];
+  tracks: string[];
   startTime: string;
+  img: string;
 }
 
 export interface SelectedBetData {

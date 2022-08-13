@@ -1,18 +1,19 @@
-/**
-
- * @format
- */
-
-import React, {type PropsWithChildren} from 'react';
+import React from 'react';
+import {useEffect, useState} from 'react';
 import {
   SafeAreaView,
   ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
   useColorScheme,
   View,
 } from 'react-native';
+import {injectStore} from './src/constants/index';
+import {PersistGate} from 'redux-persist/integration/react';
+import {store, persistor} from './src/redux/store';
+import {RootState} from './src/redux/store';
+import {Provider, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {NavigationContainer} from '@react-navigation/native';
 import {
   Colors,
@@ -22,7 +23,7 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-const Section: React.FC<
+/* const Section: React.FC<
   PropsWithChildren<{
     title: string;
   }>
@@ -50,45 +51,44 @@ const Section: React.FC<
       </Text>
     </View>
   );
+}; */
+
+const AppWrapper = () => {
+  return (
+    <Provider store={store}>
+      <PersistGate persistor={persistor}>
+        <App />
+      </PersistGate>
+    </Provider>
+  );
 };
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
+  injectStore(store);
+  // const dispatch = useDispatch();
+  // betData
+  let betData = useSelector((state: RootState) => {
+    return state.data.betData;
+  });
+  useEffect(() => {
+    console.log({betData});
+  }, [betData]);
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
   return (
-    <NavigationContainer>
-      <SafeAreaView style={backgroundStyle}>
-        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={backgroundStyle}>
-          <Header />
-          <View
-            style={{
-              backgroundColor: isDarkMode ? Colors.black : Colors.white,
-            }}>
-            <Section title="Step Oneeeeee">
-              Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-              screen and then come back to see your edits.
-            </Section>
-            <Section title="See Your Changes">
-              <ReloadInstructions />
-            </Section>
-            <Section title="Debug">
-              <DebugInstructions />
-            </Section>
-            <Section title="Learn More">
-              Read the docs to discover what to do next:
-            </Section>
-            <LearnMoreLinks />
+    <SafeAreaView style={backgroundStyle}>
+      <NavigationContainer>
+        <ScrollView>
+          <View>
+            <Text>hi</Text>
           </View>
         </ScrollView>
-      </SafeAreaView>
-    </NavigationContainer>
+      </NavigationContainer>
+    </SafeAreaView>
   );
 };
 
@@ -111,4 +111,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+export default AppWrapper;

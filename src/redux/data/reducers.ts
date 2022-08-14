@@ -3,11 +3,10 @@ import * as ActionTypes from './types';
 const initalState: ActionTypes.DataState = {
   betData: {
     betType: '',
-    tracks: [''],
-    startTime: '',
+    img: '',
   },
   selectedBetData: {
-    betType: '',
+    betId: '',
     raceNumber: 0,
     raceName: '',
     raceStartTime: '',
@@ -22,6 +21,11 @@ const initalState: ActionTypes.DataState = {
     horseName: '',
     trainer: '',
     father: '',
+  },
+  fetchedBet: {
+    betId: '',
+    tracks: [''],
+    startTime: '',
   },
 };
 
@@ -46,6 +50,11 @@ function dataReducer(state = initalState, action: ActionTypes.DataActionTypes) {
       return {
         ...state,
         horseDetails: {...state.horseDetails, ...action.payload},
+      };
+    case ActionTypes.DATA_ACTIONS.SET_FETCHED_BET:
+      return {
+        ...state,
+        fetchedBet: {...state.fetchedBet, ...action.payload},
       };
     default:
       return state;

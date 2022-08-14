@@ -18,5 +18,15 @@ export const setRaceHorses = (raceHorses: ActionTypes.RaceHorses) => ({
   type: ActionTypes.DATA_ACTIONS.SET_RACE_HORSES,
   payload: raceHorses,
 });
+export const setFetchedBet = (fetchedBet: ActionTypes.FetchedBet) => ({
+  type: ActionTypes.DATA_ACTIONS.SET_FETCHED_BET,
+  payload: fetchedBet,
+});
 
-export default {setRaceHorses, setHorseDetails, setSelectedBetData, setBetData};
+export default {
+  setRaceHorses,
+  setHorseDetails,
+  setSelectedBetData,
+  setBetData,
+  setFetchedBet,
+};

@@ -10,8 +10,8 @@ export const filterData = (results: any): FetchedBet[] => {
     });
     let f: FetchedBet = {
       betId: element.id,
-      tracks: element.tracks[0].name,
-      startTime: element.startTime,
+      tracks: tracks,
+      startTime: new Date(element.startTime),
     };
     filteredDdata.push(f);
   });

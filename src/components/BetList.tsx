@@ -8,17 +8,23 @@ import {
   FlatList,
   TouchableOpacity,
   ImageSourcePropType,
+  Animated,
+  ScrollView,
+  Dimensions,
+  StatusBar,
 } from 'react-native';
 import {useDispatch} from 'react-redux';
 import {imagesLinks} from '../assets';
-import {BET, COLORS, FONTS, SIZES} from '../constants/index';
+import {BET, COLORS, SIZES} from '../constants/index';
 import {filterData} from '../controllers/FetchedBetController';
 import {DataActions} from '../redux/data';
 import {BetData, FetchedBet, RawBetData} from '../redux/data/types';
+import GamesList from './GamesList';
 
 const BetList = () => {
   const [betDetailsList, setBetDetailsList] = useState<FetchedBet[]>();
   const dispatch = useDispatch();
+  const {width, height} = Dimensions.get('screen');
   const betTypes: [BetData] = [
     {
       betType: BET.V75,
@@ -37,13 +43,16 @@ const BetList = () => {
       img: require('../assets/v86.png'),
     },
   ];
-
+  const [selectedType, setSelectedType] = useState<string>('');
+  const animated = Animated.createAnimatedComponent(FlatList);
+  const imgSize = 70;
   useEffect(() => {
     fetchBet(betTypes[0].betType);
     console.log('details is : ', betDetailsList);
   }, []);
 
   const fetchBet = (bet: string) => {
+    setSelectedType(betTypes.find(e => e.betType === bet).img);
     return fetch(
       `https://www.atg.se/services/racinginfo/v1/api/products/${bet}`,
     )
@@ -84,7 +93,7 @@ const BetList = () => {
         onPress={() => {
           fetchBet(item.betType);
         }}>
-        <Text style={{color: COLORS.gray, ...FONTS.h5}}>{item.betType}</Text>
+        <Text style={{color: COLORS.gray}}>{item.betType}</Text>
         {/* <View
           style={[
             {
@@ -101,81 +110,7 @@ const BetList = () => {
             styles.trendingShadow,
           ]}> */}
         <View style={{height: '35%', justifyContent: 'space-between'}}>
-          <Text style={{color: COLORS.white, ...FONTS.body4}}>
-            {item.betType}
-          </Text>
-          {/*  <Text style={{color: COLORS.white, ...FONTS.h3}}>{item.price}</Text> */}
-        </View>
-        {/* </View> */}
-        {/*
-        <View
-          style={{
-            position: 'absolute',
-            top: 27,
-            right: 0,
-            width: '95%',
-            height: '100%',
-          }}>
-          <Svg height="100%" width="100%">
-            <Polygon points="0,0 160,0 160,80" fill="white" />
-          </Svg>
-        </View>
-        */}
-
-        <Image
-          source={item.img}
-          resizeMode="stretch"
-          style={{
-            position: 'absolute',
-            top: 50,
-            right: 0,
-            width: '98%',
-            height: 80,
-            // transform: [{rotate: '+15deg'}],
-          }}
-        />
-      </TouchableOpacity>
-    );
-  };
-  const rednerDetailsList = (item: FetchedBet, index: number) => {
-    var trendingStyle = {};
-
-    if (index === 0) {
-      trendingStyle = {marginLeft: SIZES.padding};
-    }
-
-    return (
-      <TouchableOpacity
-        style={{
-          height: 240,
-          width: 180,
-          justifyContent: 'center',
-          marginHorizontal: SIZES.base,
-          ...trendingStyle,
-        }}
-        onPress={() => {
-          // fetchBet(item.betId);
-        }}>
-        <Text style={{color: COLORS.gray, ...FONTS.h5}}>{item.betType}</Text>
-        {/* <View
-          style={[
-            {
-              flex: 1,
-              justifyContent: 'flex-end',
-              marginTop: SIZES.base,
-              borderRadius: 10,
-              marginRight: SIZES.padding,
-              paddingLeft: SIZES.radius,
-              paddingRight: SIZES.padding,
-              paddingBottom: SIZES.radius,
-              //backgroundColor: item.bgColor,
-            },
-            styles.trendingShadow,
-          ]}> */}
-        <View style={{height: '35%', justifyContent: 'space-between'}}>
-          <Text style={{color: COLORS.white, ...FONTS.body4}}>
-            {item.betType}
-          </Text>
+          <Text style={{color: COLORS.white}}>{item.betType}</Text>
           {/*  <Text style={{color: COLORS.white, ...FONTS.h3}}>{item.price}</Text> */}
         </View>
         {/* </View> */}
@@ -211,19 +146,27 @@ const BetList = () => {
   };
 
   return (
-    <View style={{height: 260, marginTop: SIZES.radius}}>
-      <FlatList
-        horizontal
-        showsHorizontalScrollIndicator={true}
-        data={betTypes}
-        keyExtractor={item => item.betType}
-        renderItem={({item, index}) => renderItems(item, index)}
-      />
-      <FlatList
-        data={betDetailsList}
-        keyExtractor={item => item.betId}
-        renderItem={({item, index}) => rednerDetailsList(item, index)}
-      />
+    <View
+      style={{
+        /* height: 200, */
+        marginTop: SIZES.radius,
+      }}>
+      <View
+        style={{
+          backgroundColor: 'green',
+          marginBottom: 0,
+          height: 200,
+          /* flexDirection: 'row', */
+        }}>
+        <FlatList
+          horizontal
+          showsHorizontalScrollIndicator={true}
+          data={betTypes}
+          keyExtractor={item => item.betType}
+          renderItem={({item, index}) => renderItems(item, index)}
+        />
+      </View>
+      <GamesList betDetailsList={betDetailsList} selectedType={selectedType} />
     </View>
   );
 };

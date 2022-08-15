@@ -16,7 +16,7 @@ export interface BetData {
 export interface FetchedBet {
   betId: string;
   tracks: string[];
-  startTime: string;
+  startTime: Date;
 }
 
 export interface SelectedBetData {

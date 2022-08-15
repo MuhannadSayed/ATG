@@ -13,7 +13,7 @@ import {PersistGate} from 'redux-persist/integration/react';
 import {store, persistor} from './src/redux/store';
 import {RootState} from './src/redux/store';
 import {Provider, useSelector} from 'react-redux';
-import {useDispatch} from 'react-redux';
+
 import {NavigationContainer} from '@react-navigation/native';
 import {
   Colors,
@@ -83,11 +83,9 @@ const App = () => {
   return (
     <SafeAreaView style={backgroundStyle}>
       <NavigationContainer>
-        <ScrollView>
-          <View>
-            <GamesContainer />
-          </View>
-        </ScrollView>
+        <View>
+          <GamesContainer />
+        </View>
       </NavigationContainer>
     </SafeAreaView>
   );

@@ -1,5 +1,12 @@
 import React, {useEffect} from 'react';
-import {View, StyleSheet, SafeAreaView, Image, Text} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  SafeAreaView,
+  Image,
+  Text,
+  ScrollView,
+} from 'react-native';
 import BetList from './BetList';
 import GamesList from './GamesList';
 
@@ -11,7 +18,7 @@ const GamesContainer = () => {
   return (
     <View>
       <BetList />
-      <GamesList />
+      {/*  <GamesList /> */}
     </View>
   );
 };

@@ -10,9 +10,9 @@ import {
 } from 'react-native';
 import {BET_TYPES} from '../constants';
 import {filterData} from '../controllers/FetchedBetController';
-import {BetData, FetchedBet} from '../redux/data/types';
-import {NavigationContainer, useNavigation} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {FetchedBet} from '../redux/data/types';
+import {useNavigation} from '@react-navigation/native';
+
 export type StackNavigation = StackNavigationProp<StackParamList>;
 
 import {HomeScreenNavigationProp} from '../nav/types';
@@ -24,6 +24,7 @@ const MainBetType = () => {
   const [selectedType, setSelectedType] = useState<string>('');
   const navigation = useNavigation<HomeScreenNavigationProp>();
   const dispatch = useDispatch();
+
   const fetchBet = (bet: string) => {
     setSelectedType(BET_TYPES.find(e => e.betType === bet).img);
     setBetDetailsList([]);
@@ -33,13 +34,12 @@ const MainBetType = () => {
       .then(response => response.json())
       .then(json => {
         const results: any = json.results;
-        console.log({results});
+
         const details: FetchedBet[] = filterData(results);
-        console.log('filter is : ', filterData(results));
+
         setBetDetailsList(details);
         dispatch(DataActions.setFetchedBet(details));
-        console.log('list is : ', betDetailsList);
-        //navigation.navigate('BList');
+
         navigation.push('BList', {
           list: betDetailsList,
           selected: selectedType,

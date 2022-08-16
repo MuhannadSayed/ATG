@@ -1,7 +1,6 @@
-import {HorseDetails, RaceHorses, SelectedRaceData} from '../redux/data/types';
+import {RaceHorses, SelectedRaceData} from '../redux/data/types';
 
 export const filterRaceData = (results: any): SelectedRaceData[] => {
-  //const element = results.races[0];
   console.log({results});
 
   let filteredDdata: SelectedRaceData[] = [];
@@ -29,21 +28,12 @@ export const filterRaceData = (results: any): SelectedRaceData[] => {
     race.raceNumber = element.number;
     race.raceStartTime = element.startTime;
     filteredDdata.push(race);
-    console.log("i'll return : ", race);
   });
-  /* var tempRacenr: number = 0;
-  var tempRaceName: string = '';
-  var tempRaceStartTime: string = '';
-  var raceHorses: [RaceHorses] = [raceHorse]; */
-
-  //tempRaceName = element.races.name;
-  //tempRacenr = element.races.number;
-  //tempRaceStartTime = element.races.startTime;
 
   return filteredDdata;
 };
 
-const filterRaceHorse = (e: any): RaceHorses[] => {
+export const filterRaceHorse = (e: any): RaceHorses[] => {
   var horsesArr: RaceHorses[] = [];
 
   e.forEach(element => {
@@ -66,7 +56,6 @@ const filterRaceHorse = (e: any): RaceHorses[] => {
 
     horsesArr.push(tempHorse);
   });
-  //console.log("i'll return now ");
 
   return horsesArr;
 };

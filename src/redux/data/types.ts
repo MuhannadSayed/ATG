@@ -2,10 +2,10 @@ import {ImageSourcePropType} from 'react-native';
 
 export interface DataState {
   betData: BetData;
-  selectedBetData: SelectedBetData;
-  raceHorses: RaceHorses;
-  horseDetails: HorseDetails;
-  fetchedBet: FetchedBet;
+  selectedRaceData: SelectedRaceData;
+  fetchedBet: FetchedBet[];
+  raceArrays: [SelectedRaceData];
+  show: boolean;
 }
 
 export interface BetData {
@@ -17,24 +17,25 @@ export interface FetchedBet {
   betId: string;
   tracks: string[];
   startTime: Date;
+  isExpanded: boolean;
 }
 
-export interface SelectedBetData {
+export interface SelectedRaceData {
   betId: string;
   raceNumber: number;
   raceName: string;
   raceStartTime: string;
+  raceHorses: [RaceHorses];
 }
 
 export interface RaceHorses {
-  raceName: string;
   startNumber: number;
   horseName: string;
   driver: string;
+  horseDetails: HorseDetails;
 }
 
 export interface HorseDetails {
-  horseName: string;
   trainer: string;
   father: string;
 }
@@ -44,22 +45,27 @@ export interface RawBetData {
   tracks: string[];
   startTime: string;
 }
+export interface ShowModal {
+  show: boolean;
+}
 
 export enum DATA_ACTIONS {
   SET_BET_DATA = 'SET_BET_DATA',
-  SET_SELECTED_BET_DATA = 'SET_SELECTED_BET_DATA',
+  SET_SELECTED_RACE_DATA = 'SET_SELECTED_RACE_DATA',
   SET_RACE_HORSES = 'SET_RACE_HORSES',
   SET_HORSE_DETAILS = 'SET_HORSE_DETAILS',
   SET_FETCHED_BET = 'SET_FETCHED_BET',
+  SET_RACE_ARRAYS = 'SET_RACE_ARRAYS',
+  SET_SHOW_MODAL = 'SET_SHOW_MODAL',
 }
 
 interface SetBetData {
   type: typeof DATA_ACTIONS.SET_BET_DATA;
   payload: BetData;
 }
-interface SetSelectedBetData {
-  type: typeof DATA_ACTIONS.SET_SELECTED_BET_DATA;
-  payload: SelectedBetData;
+interface SetSelectedRaceData {
+  type: typeof DATA_ACTIONS.SET_SELECTED_RACE_DATA;
+  payload: SelectedRaceData;
 }
 interface SetRaceHorses {
   type: typeof DATA_ACTIONS.SET_RACE_HORSES;
@@ -70,9 +76,18 @@ interface SetHorseDetails {
   payload: HorseDetails;
 }
 
-interface setFetchedBet {
+interface SetFetchedBet {
   type: typeof DATA_ACTIONS.SET_FETCHED_BET;
   payload: FetchedBet;
+}
+
+interface SetRaceArrays {
+  type: typeof DATA_ACTIONS.SET_RACE_ARRAYS;
+  payload: [SelectedRaceData];
+}
+interface SetShowModal {
+  type: typeof DATA_ACTIONS.SET_SHOW_MODAL;
+  payload: boolean;
 }
 
 ////////////
@@ -81,5 +96,7 @@ export type DataActionTypes =
   | SetBetData
   | SetHorseDetails
   | SetRaceHorses
-  | SetSelectedBetData
-  | setFetchedBet;
+  | SetSelectedRaceData
+  | SetRaceArrays
+  | SetShowModal
+  | SetFetchedBet;

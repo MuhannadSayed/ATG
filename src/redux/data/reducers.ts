@@ -5,28 +5,53 @@ const initalState: ActionTypes.DataState = {
     betType: '',
     img: '',
   },
-  selectedBetData: {
+  selectedRaceData: {
     betId: '',
     raceNumber: 0,
     raceName: '',
     raceStartTime: '',
+    raceHorses: [
+      {
+        startNumber: 0,
+        horseName: '',
+        driver: '',
+        horseDetails: {
+          trainer: '',
+          father: '',
+        },
+      },
+    ],
   },
-  raceHorses: {
-    raceName: '',
-    startNumber: 0,
-    horseName: '',
-    driver: '',
-  },
-  horseDetails: {
-    horseName: '',
-    trainer: '',
-    father: '',
-  },
-  fetchedBet: {
-    betId: '',
-    tracks: [''],
-    startTime: '',
-  },
+  raceArrays: [
+    {
+      betId: '',
+      raceNumber: 0,
+      raceName: '',
+      raceStartTime: '',
+      raceHorses: [
+        {
+          startNumber: 0,
+          horseName: '',
+          driver: '',
+          horseDetails: {
+            trainer: '',
+            father: '',
+          },
+        },
+      ],
+    },
+  ],
+
+  fetchedBet: [
+    {
+      betId: '',
+      tracks: [''],
+      startTime: new Date(),
+      isExpanded: false,
+    },
+  ],
+
+  show: false,
 };
 
 function dataReducer(state = initalState, action: ActionTypes.DataActionTypes) {
@@ -36,25 +61,38 @@ function dataReducer(state = initalState, action: ActionTypes.DataActionTypes) {
         ...state,
         betData: {...state.betData, ...action.payload},
       };
-    case ActionTypes.DATA_ACTIONS.SET_SELECTED_BET_DATA:
+    case ActionTypes.DATA_ACTIONS.SET_SELECTED_RACE_DATA:
       return {
         ...state,
-        selectedBetData: {...state.selectedBetData, ...action.payload},
+        selectedRaceData: {...state.selectedRaceData, ...action.payload},
       };
     case ActionTypes.DATA_ACTIONS.SET_RACE_HORSES:
       return {
         ...state,
-        raceHorses: {...state.raceHorses, ...action.payload},
+        raceHorses: {...state.selectedRaceData.raceHorses, ...action.payload},
       };
     case ActionTypes.DATA_ACTIONS.SET_HORSE_DETAILS:
       return {
         ...state,
-        horseDetails: {...state.horseDetails, ...action.payload},
+        horseDetails: {
+          ...state.selectedRaceData.raceHorses.horseDetails,
+          ...action.payload,
+        },
       };
     case ActionTypes.DATA_ACTIONS.SET_FETCHED_BET:
       return {
         ...state,
         fetchedBet: {...state.fetchedBet, ...action.payload},
+      };
+    case ActionTypes.DATA_ACTIONS.SET_RACE_ARRAYS:
+      return {
+        ...state,
+        raceArrays: {...state.raceArrays, ...action.payload},
+      };
+    case ActionTypes.DATA_ACTIONS.SET_SHOW_MODAL:
+      return {
+        ...state,
+        show: {...state.show, ...action.payload},
       };
     default:
       return state;

@@ -1,3 +1,4 @@
+import {useNavigation} from '@react-navigation/native';
 import React, {useEffect} from 'react';
 import {
   View,
@@ -9,18 +10,13 @@ import {
 } from 'react-native';
 import BetList from './BetList';
 import GamesList from './GamesList';
+import MainBetType from './MainBetType';
 
-const GamesContainer = () => {
-  useEffect(() => {
-    console.log('hi ');
-  }, []);
+const GamesContainer = ({navigation}) => {
+  /* const navigation = useNavigation(); */
+  console.log('live from container');
 
-  return (
-    <View>
-      <BetList />
-      {/*  <GamesList /> */}
-    </View>
-  );
+  return <MainBetType />;
 };
 
 export default GamesContainer;

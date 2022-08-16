@@ -13,7 +13,10 @@ import {PersistGate} from 'redux-persist/integration/react';
 import {store, persistor} from './src/redux/store';
 import {RootState} from './src/redux/store';
 import {Provider, useSelector} from 'react-redux';
+import {StackNavigationProp} from '@react-navigation/stack';
 
+import {RootStackParamList} from './src/nav/RootStackParams';
+import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 import {
   Colors,
@@ -23,7 +26,11 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 import GamesContainer from './src/components/GamesContainer';
-
+import RaceDetails from './src/components/RaceDetails';
+import RootNavigator from './src/nav/RootNavigator';
+import BetList from './src/components/BetList';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {HomeStackNavigatorParamList} from './src/nav/types';
 /* const Section: React.FC<
   PropsWithChildren<{
     title: string;
@@ -63,7 +70,7 @@ const AppWrapper = () => {
     </Provider>
   );
 };
-
+const HomeStack = createNativeStackNavigator<HomeStackNavigatorParamList>();
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
   injectStore(store);
@@ -81,13 +88,20 @@ const App = () => {
   };
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <NavigationContainer>
-        <View>
-          <GamesContainer />
-        </View>
-      </NavigationContainer>
-    </SafeAreaView>
+    <NavigationContainer>
+      <HomeStack.Navigator>
+        <HomeStack.Screen
+          name="GContainer"
+          component={GamesContainer}
+          options={{title: 'Welcome'}}
+        />
+        <HomeStack.Screen
+          name="BList"
+          component={BetList}
+          options={{title: 'Välj Bet'}}
+        />
+      </HomeStack.Navigator>
+    </NavigationContainer>
   );
 };
 

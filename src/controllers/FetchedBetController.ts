@@ -12,6 +12,7 @@ export const filterData = (results: any): FetchedBet[] => {
       betId: element.id,
       tracks: tracks,
       startTime: new Date(element.startTime),
+      isExpanded: false,
     };
     filteredDdata.push(f);
   });

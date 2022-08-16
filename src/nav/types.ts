@@ -7,6 +7,12 @@ export type HomeStackNavigatorParamList = {
     list: any;
     selected: string;
   };
+  GList: {
+    races: any;
+  };
+  HList: {
+    horses: any;
+  };
 };
 
 export type HomeScreenNavigationProp = NativeStackNavigationProp<
@@ -17,4 +23,14 @@ export type HomeScreenNavigationProp = NativeStackNavigationProp<
 export type BListScreenRouteProp = RouteProp<
   HomeStackNavigatorParamList,
   'BList'
+>;
+
+export type GListScreenRouteProp = RouteProp<
+  HomeStackNavigatorParamList,
+  'GList'
+>;
+
+export type HListScreenRouteProp = RouteProp<
+  HomeStackNavigatorParamList,
+  'HList'
 >;

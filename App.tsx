@@ -31,6 +31,9 @@ import RootNavigator from './src/nav/RootNavigator';
 import BetList from './src/components/BetList';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {HomeStackNavigatorParamList} from './src/nav/types';
+import GamesList from './src/components/GamesList';
+import HorseDetails from './src/components/HDetails';
+import HDetails from './src/components/HDetails';
 /* const Section: React.FC<
   PropsWithChildren<{
     title: string;
@@ -99,6 +102,16 @@ const App = () => {
           name="BList"
           component={BetList}
           options={{title: 'Välj Bet'}}
+        />
+        <HomeStack.Screen
+          name="GList"
+          component={GamesList}
+          options={{title: 'Spel detaljer'}}
+        />
+        <HomeStack.Screen
+          name="HList"
+          component={HDetails}
+          options={{title: 'Hästar'}}
         />
       </HomeStack.Navigator>
     </NavigationContainer>

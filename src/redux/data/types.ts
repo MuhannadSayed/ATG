@@ -25,7 +25,7 @@ export interface SelectedRaceData {
   raceNumber: number;
   raceName: string;
   raceStartTime: string;
-  raceHorses: [RaceHorses];
+  raceHorses: RaceHorses[];
 }
 
 export interface RaceHorses {

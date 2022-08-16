@@ -14,6 +14,7 @@ import {
   Dimensions,
   StatusBar,
   LayoutAnimation,
+  Alert,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 
@@ -24,36 +25,39 @@ import {DataActions} from '../redux/data';
 import {
   BetData,
   FetchedBet,
+  HorseDetails,
+  RaceHorses,
   RawBetData,
   SelectedRaceData,
 } from '../redux/data/types';
-import GamesList from './GamesList';
+
 import {useRoute} from '@react-navigation/native';
 import type {RouteProp} from '@react-navigation/native';
-import {HomeStackNavigatorParamList} from '../nav/types';
-import {BListScreenRouteProp} from '../nav/types';
+import {HListScreenRouteProp, HomeStackNavigatorParamList} from '../nav/types';
+import {GListScreenRouteProp} from '../nav/types';
 import {RootState} from '../redux/store';
 import Collapsible from 'react-native-collapsible';
 import RaceDetails from './RaceDetails';
-import {filterRaceData} from '../controllers/FetchedRaceController';
+import {
+  filterRaceData,
+  filterRaceHorse,
+} from '../controllers/FetchedRaceController';
 
-const BetList = () => {
-  const route = useRoute<BListScreenRouteProp>();
-  const {list, selected} = route.params;
-  const [currentList, setCurrentList] = useState<FetchedBet[]>(list);
+const HDetails = () => {
+  const route = useRoute<HListScreenRouteProp>();
+  const {horses} = route.params;
+  // const [currentList, setCurrentList] = useState<FetchedBet[]>(list);
   const [currentBet, setCurrentBet] = useState<FetchedBet>();
-  const [show, setShow] = useState<boolean>(false);
-  const [raceArr, setRaceArr] = useState<SelectedRaceData[]>();
+  const [show, setShow] = useState<boolean>(true);
+  //const [raceArr, setRaceArr] = useState<SelectedRaceData[]>(races);
   const [fetchedData, setFetchedData] = useState<any>();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [height, setHeight] = useState<number>(0);
-  const [showDetails, setShowDetails] = useState<boolean>(true);
+  const [currentHorses, setCurrentHorses] = useState<RaceHorses[]>(horses);
   let fetchedBetArr = useSelector((state: RootState) => {
     return state.data.fetchedBet;
   });
-  const navigation = useNavigation<BListScreenRouteProp>();
-
-  console.log('from muhannad ', fetchedBetArr, 'and list is : ', list);
+  //console.log('from muhannad ', fetchedBetArr, 'and list is : ', list);
 
   const fetchBet = (bet: string) => {
     /* setSelectedType(betTypes.find(e => e.betType === bet).img); */
@@ -85,7 +89,7 @@ const BetList = () => {
       });
   };
 
-  const toggleCollapsed = (index: string) => {
+  /* const toggleCollapsed = (index: string) => {
     console.log('hello', currentBet);
     //setCurrentBet(index);
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
@@ -98,7 +102,7 @@ const BetList = () => {
     );
 
     setCurrentList(array); */
-    /* let objIndex: number = 46;
+  /* let objIndex: number = 46;
     if (currentBet) {
       console.log('shpuld');
 
@@ -108,7 +112,7 @@ const BetList = () => {
       setRefresh(!refresh);
     }
     console.log({objIndex}); */
-  };
+  //}; */
 
   useEffect(() => {
     if (currentBet)
@@ -128,17 +132,13 @@ const BetList = () => {
         setCurrentBet(null);
       }
   }, [currentBet, show]);
-  const scrollY = React.useRef(new Animated.Value(0)).current;
-  const RaceItem = ({item}) => (
+  /* const RaceItem = ({item}) => (
     <View>
-      <TouchableOpacity>
-        <Text>Race nr : {item.raceNumber}</Text>
-        <Text>Race namn : {item.raceName}</Text>
-        <Text>Race starttid : {item.raceStartTime}</Text>
-      </TouchableOpacity>
+      <Text>Race nr : {item.raceNumber}</Text>
+      <Text>Race namn : {item.raceName}</Text>
+      <Text>Race starttid : {item.raceStartTime}</Text>
     </View>
-  );
-
+  ); */
   const Item = ({data}) => (
     <View>
       <TouchableOpacity
@@ -151,59 +151,56 @@ const BetList = () => {
           borderRadius: 10,
         }}
         onPress={() => {
-          fetchBet(data.betId);
-          setCurrentBet(data);
-          navigation.push('GList', {
-            races: raceArr,
-          });
+          //let h: RaceHorses[] = filterRaceHorse(data);
+          // setHorses(data.raceHorses);
+          //console.log({h});
         }}>
-        <Image
-          resizeMode="stretch"
-          style={{
-            height: 70,
-            width: 70,
-            borderRadius: 70,
-            marginRight: 10,
-            alignContent: 'center',
-            alignItems: 'center',
-            alignSelf: 'center',
-          }}
-          source={selected}
-        />
         <View style={{width: '75%'}}>
-          <Text style={{fontSize: 22}}>{data.tracks[0]}</Text>
-          <Text style={{fontSize: 17}}>
-            {data.startTime.toString().slice(0, 21)}
+          <Text style={{fontSize: 22}}>Häst namn : {data.horseName}</Text>
+          <Text style={{fontSize: 17}}>Häst Förare : {data.driver}</Text>
+          {/* <Text style={{fontSize: 17}}>
+            Häst tränare :{' '}
+            {data.horseDetails.trainer ? data.horseDetails.trainer : null}
           </Text>
-          {data.betId === currentBet?.betId && (
-            <View
-              style={{
-                backgroundColor: 'red',
-                height: height,
-                width: '100%',
-                justifyContent: 'center',
-              }}>
-              <TouchableOpacity
-                onPress={() => {
-                  setShowDetails(true);
-                }}>
-                <Text>Click here for more info</Text>
-                <View>{showDetails && <View></View>}</View>
-              </TouchableOpacity>
-            </View>
-          )}
+          <Text style={{fontSize: 17}}>
+            Häst farsa :{' '}
+            {data.horseDetails.father ? data.horseDetails.father : null}
+          </Text> */}
+          {/* <View>
+            {show &&
+              data.horses.map((value, index) => {
+                console.log({value});
+
+                return raceViews(value);
+              })}
+          </View> */}
+          {/*  <TouchableOpacity
+            style={{backgroundColor: 'red'}}
+            onPress={() => setShow(true)}>
+            <Text>Click here for more information ... </Text>
+          </TouchableOpacity>
+           */}
         </View>
-        <View style={{width: '100%'}}></View>
       </TouchableOpacity>
     </View>
   );
   const renderItem = ({item}) => <Item data={item} />;
+  const raceViews = ({data}) => {
+    console.log({data});
 
+    return (
+      <View>
+        {/* <Text>Horse name : {data.horseName}</Text> */}
+        {/* <Text>Race namn : {data.raceName}</Text>
+        <Text>Race starttid : {data.raceStartTime}</Text> */}
+      </View>
+    );
+  };
   return (
     <View>
       <FlatList
-        data={currentList}
-        keyExtractor={item => item.betId}
+        data={currentHorses}
+        keyExtractor={item => item.horseName}
         renderItem={(item, index) => renderItem(item)}
       />
     </View>
@@ -219,7 +216,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
 });
-export default BetList;
+export default HDetails;
 
 //{//<View}
 //  style={{
